@@ -1,0 +1,55 @@
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# =========================
+# Environment variables
+# =========================
+.env
+.env.local
+.env.*.local
+
+# =========================
+# Build / Dist folders
+# =========================
+dist/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+.storybook/
+
+# =========================
+# Caches
+# =========================
+.cache/
+.parcel-cache/
+.vite/
+coverage/
+*.tsbuildinfo
+
+# =========================
+# OS-specific files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Editors & IDEs
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# Other
+# =========================
+*.tgz
