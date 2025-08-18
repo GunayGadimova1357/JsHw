@@ -1,0 +1,29 @@
+html , body {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+.football_field{
+    position: relative;
+    height: 100vh;
+    background: url('img/Football_field.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.football_ball{
+    position: absolute;
+    width: 100px;
+    height: 100px;
+
+    background: url('img/football_ball.PNG');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    transition: left 0.5s, top 0.5s;
+    pointer-events: none;
+}

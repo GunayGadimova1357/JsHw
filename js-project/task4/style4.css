@@ -1,0 +1,80 @@
+* {box-sizing: border-box;}
+
+html, body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #EBCD83;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    background-color: #f6f2ea;
+    border: 1.5px solid #cfc5b6;
+    border-radius: 18px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.08);
+}
+
+.traffic-light {
+    background: #f6f8f1;
+    border: 2px solid #d3c9bb;
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 18px;
+}
+
+.light {
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: #8f949c;
+    opacity: .55;
+    transition: all .25s ease;
+}
+
+.light.active.red {
+  background: radial-gradient(circle at 30% 30%, #ff8a80, #ff5252 60%, #d32f2f);
+  opacity: 1;
+  box-shadow: 0 0 18px rgba(255,82,82,.7);
+}
+
+.light.active.yellow {
+  background: radial-gradient(circle at 30% 30%, #ffe082, #ffca28 60%, #f9a825);
+  opacity: 1;
+  box-shadow: 0 0 18px rgba(255,202,40,.7);
+}
+
+.light.active.green {
+  background: radial-gradient(circle at 30% 30%, #80e27e, #4caf50 60%, #2e7d32);
+  opacity: 1;
+  box-shadow: 0 0 18px rgba(76,175,80,.7);
+}
+
+.next {
+  min-width: 112px;
+  height: 64px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 2px solid #d3c9bb;
+  background: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .18s ease;
+}
+
+.next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,.1);
+}
+
+.next:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
