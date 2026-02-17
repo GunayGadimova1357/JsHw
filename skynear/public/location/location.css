@@ -1,0 +1,45 @@
+body {
+  background: #f4f6f9;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+header {
+  padding: 20px;
+  background: #4e73df;
+  color: white;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#map {
+  height: 500px;
+  margin: 30px auto;
+  width: 90%;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.location-info {
+  width: 90%;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.save-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #1cc88a;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.save-btn:hover {
+  background: #17a673;
+}
