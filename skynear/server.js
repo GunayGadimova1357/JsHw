@@ -1,4 +1,3 @@
-// server.js
 require('dotenv').config();
 
 const express = require("express");
@@ -14,12 +13,11 @@ const SESSION_SECRET = process.env.SESSION_SECRET || "change_me";
 const OPENWEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
 
 if (!OPENWEATHER_API_KEY) {
-  console.warn("⚠️ OPENWEATHER_API_KEY не задан. Погода не будет работать.");
+  console.warn("⚠️ OPENWEATHER_API_KEY not set. Weather API calls will fail. Please set it in .env file.");
 }
 
 const USERS_PATH = path.join(__dirname, "data", "users.json");
 
-// -------- helpers: safe JSON storage --------
 let writeLock = Promise.resolve();
 
 async function readUsers() {
@@ -28,7 +26,6 @@ async function readUsers() {
 }
 
 function writeUsers(users) {
-  // простой mutex, чтобы записи не конфликтовали
   writeLock = writeLock.then(() =>
     fs.writeFile(USERS_PATH, JSON.stringify(users, null, 2), "utf-8")
   );
@@ -40,7 +37,6 @@ function requireAuth(req, res, next) {
   next();
 }
 
-// -------- middleware --------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -55,17 +51,16 @@ app.use(
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// -------- auth routes --------
 app.post("/api/register", async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password || password.length < 6) {
-      return res.status(400).json({ error: "Username обязателен, password минимум 6 символов." });
+      return res.status(400).json({ error: "Username is required, password must be at least 6 characters." });
     }
 
     const users = await readUsers();
     const exists = users.some((u) => u.username.toLowerCase() === username.toLowerCase());
-    if (exists) return res.status(409).json({ error: "Пользователь уже существует." });
+    if (exists) return res.status(409).json({ error: "User already exists." });
 
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -73,7 +68,7 @@ app.post("/api/register", async (req, res) => {
       id: cryptoRandomId(),
       username,
       passwordHash,
-      home: null, // { lat, lon, address }
+      home: null, 
       createdAt: new Date().toISOString(),
     };
 
@@ -93,10 +88,10 @@ app.post("/api/login", async (req, res) => {
     const { username, password } = req.body;
     const users = await readUsers();
     const user = users.find((u) => u.username.toLowerCase() === String(username).toLowerCase());
-    if (!user) return res.status(401).json({ error: "Неверный логин или пароль." });
+    if (!user) return res.status(401).json({ error: "Invalid username or password." });
 
     const ok = await bcrypt.compare(password, user.passwordHash);
-    if (!ok) return res.status(401).json({ error: "Неверный логин или пароль." });
+    if (!ok) return res.status(401).json({ error: "Invalid username or password." });
 
     req.session.userId = user.id;
     res.json({ ok: true });
@@ -124,12 +119,11 @@ app.get("/api/me", requireAuth, async (req, res) => {
   });
 });
 
-// -------- profile: save home location --------
 app.post("/api/profile/home", requireAuth, async (req, res) => {
   try {
     const { lat, lon, address } = req.body;
     if (typeof lat !== "number" || typeof lon !== "number") {
-      return res.status(400).json({ error: "lat/lon должны быть числами." });
+      return res.status(400).json({ error: "lat/lon must be numbers." });
     }
 
     const users = await readUsers();
@@ -151,8 +145,7 @@ app.post("/api/profile/home", requireAuth, async (req, res) => {
   }
 });
 
-// -------- weather: nearby cities + pagination --------
-// page: 1..N, perPage fixed = 5
+
 app.get("/api/weather/nearby", requireAuth, async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page || "1", 10));
@@ -161,10 +154,10 @@ app.get("/api/weather/nearby", requireAuth, async (req, res) => {
     const users = await readUsers();
     const user = users.find((u) => u.id === req.session.userId);
     if (!user?.home) {
-      return res.status(400).json({ error: "Сначала выберите домашний адрес в профиле." });
+      return res.status(400).json({ error: "Please set your home address in profile first." });
     }
     if (!OPENWEATHER_API_KEY) {
-      return res.status(500).json({ error: "OPENWEATHER_API_KEY не настроен на сервере." });
+      return res.status(500).json({ error: "OPENWEATHER_API_KEY is not configured on the server." });
     }
 
     const { lat, lon } = user.home;
@@ -185,7 +178,7 @@ app.get("/api/weather/nearby", requireAuth, async (req, res) => {
     // findUrl.searchParams.set("radius", "100");
 
     const findResp = await fetch(findUrl);
-    if (!findResp.ok) return res.status(502).json({ error: "Ошибка запроса к OpenWeather (find)" });
+    if (!findResp.ok) return res.status(502).json({ error: "Error fetching from OpenWeather (find)" });
     const findData = await findResp.json();
 
     const rawCities = Array.isArray(findData.list) ? findData.list : [];
@@ -281,4 +274,4 @@ function haversineKm(lat1, lon1, lat2, lon2) {
   return R * c;
 }
 
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
