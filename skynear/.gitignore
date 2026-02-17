@@ -31,5 +31,4 @@ build/
 # ===== Session files (если появятся) =====
 sessions/
 
-# ===== Users data (если не хочешь пушить базу) =====
-data/users.json
+
