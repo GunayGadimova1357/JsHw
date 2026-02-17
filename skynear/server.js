@@ -170,7 +170,7 @@ app.get("/api/weather/nearby", requireAuth, async (req, res) => {
     findUrl.searchParams.set("lon", String(lon));
     findUrl.searchParams.set("cnt", "50");
     findUrl.searchParams.set("units", "metric");
-    findUrl.searchParams.set("lang", "ru");
+    findUrl.searchParams.set("lang", "en");
     findUrl.searchParams.set("appid", OPENWEATHER_API_KEY);
 
     // radius=100 можно добавить, но OpenWeather иногда по-разному трактует;
@@ -210,7 +210,7 @@ app.get("/api/weather/nearby", requireAuth, async (req, res) => {
         const wUrl = new URL("https://api.openweathermap.org/data/2.5/weather");
         wUrl.searchParams.set("id", String(c.id));
         wUrl.searchParams.set("units", "metric");
-        wUrl.searchParams.set("lang", "ru");
+        wUrl.searchParams.set("lang", "en");
         wUrl.searchParams.set("appid", OPENWEATHER_API_KEY);
 
         const wResp = await fetch(wUrl);
